@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QING - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ========== GLOBAL RESET ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0 !important;
+        }
+
+        :root {
+            --bg: #E5E5E5;
+            --highlight: #FFFF00;
+            --border: #000000;
+            --text: #000000;
+            --white: #FFFFFF;
+            --border-width: 3px;
+            --border-width-sm: 2px;
+            --border-width-lg: 4px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Inter', 'Helvetica', 'Arial', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 中文字体精致化 */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+        }
+
+        strong, b {
+            font-weight: 600;
+        }
+
+        p {
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border: var(--border-width) solid var(--border);
+            border-radius: 50% !important;
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+            background: var(--white);
+            transform: translate(-50%, -50%);
+            transition: width 0.15s, height 0.15s, background 0.15s;
+        }
+
+        .cursor.hover {
+            width: 100px;
+            height: 100px;
+            background: var(--highlight);
+        }
+
+        /* ========== SLINKY CANVAS ========== */
+        #slinky-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* ========== NAVIGATION ========== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--white);
+            border-bottom: var(--border-width-lg) solid var(--border);
+            display: flex;
+        }
+
+        .nav-logo {
+            padding: 16px 32px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: var(--white);
+            border-right: var(--border-width-lg) solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: background 0s;
+        }
+
+        .nav-logo:hover {
+            background: var(--highlight);
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex: 1;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 16px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            border-right: var(--border-width-lg) solid var(--border);
+            background: var(--white);
+            transition: background 0s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-tab:last-child {
+            border-right: none;
+        }
+
+        .nav-tab:hover,
+        .nav-tab.active {
+            background: var(--highlight);
+        }
+
+        .nav-toggle {
+            display: none;
+            padding: 16px;
+            background: var(--white);
+            border: none;
+            border-left: var(--border-width-lg) solid var(--border);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 100vh;
+            padding: 120px 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg);
+            border-bottom: var(--border-width-lg) solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--highlight);
+            border: var(--border-width) solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 12vw;
+            font-weight: 700;
+            line-height: 0.8;
+            letter-spacing: -0.04em;
+            margin-bottom: 40px;
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-title .highlight {
+            background: var(--highlight);
+            padding: 8px 24px;
+            display: inline-block;
+            border: var(--border-width) solid var(--border);
+            font-size: 0.5em;
+        }
+
+        .hero-desc {
+            font-size: 24px;
+            line-height: 1.3;
+            max-width: 700px;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 0;
+        }
+
+        .btn {
+            padding: 20px 48px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0s;
+            border: var(--border-width) solid var(--border);
+            background: var(--white);
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn:hover {
+            background: var(--highlight);
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--highlight);
+            color: var(--text);
+        }
+
+        .btn svg {
+            stroke: currentColor;
+        }
+
+        /* ========== SECTION BASE ========== */
+        .section {
+            padding: 100px 60px;
+            background: var(--bg);
+            border-bottom: var(--border-width-lg) solid var(--border);
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--white);
+            border: var(--border-width) solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 8vw;
+            font-weight: 700;
+            line-height: 0.85;
+            letter-spacing: -0.03em;
+        }
+
+        /* ========== DRAWER ANIMATION ========== */
+        .drawer-wrapper {
+            overflow: hidden;
+            padding: 4px 0;
+        }
+
+        /* 项目卡片特殊处理 - 不需要overflow hidden */
+        .project-card.drawer-wrapper {
+            overflow: hidden;
+        }
+
+        .drawer-content {
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drawer-content.visible {
+            transform: scaleX(1);
+        }
+
+        /* Contact区域drawer-content特殊处理 */
+        .contact-content.drawer-wrapper {
+            overflow: visible;
+        }
+
+        .contact-content.drawer-wrapper .drawer-content {
+            transform: none !important;
+            transform-origin: center !important;
+            text-align: center !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-content.drawer-wrapper .drawer-content.visible {
+            transform: none !important;
+        }
+
+        .contact-content.drawer-wrapper .contact-title,
+        .contact-content.drawer-wrapper .contact-desc {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== ABOUT SECTION ========== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+        }
+
+        .about-card {
+            background: var(--white);
+            border: var(--border-width) solid var(--border);
+            padding: 40px;
+            margin: -1.5px;
+            transition: background 0s;
+        }
+
+        .about-card:hover {
+            background: var(--highlight);
+        }
+
+        .about-card-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--bg);
+            border: var(--border-width-sm) solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .about-card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .about-card-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .about-card-content p {
+            margin-bottom: 16px;
+            max-width: 100%;
+        }
+
+        .about-card-content strong {
+            font-weight: 600;
+        }
+
+        /* ========== PROJECTS SECTION ========== */
+        .projects-section {
+            background: var(--white);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+        }
+
+        .project-card {
+            position: relative;
+            aspect-ratio: 16/10;
+            border: var(--border-width) solid var(--border);
+            margin: -1.5px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--bg);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            transition: transform 0.4s;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .project-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 30px;
+            background: var(--highlight);
+            border-top: var(--border-width) solid var(--border);
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .project-card:hover .project-card-overlay {
+            transform: translateY(0);
+        }
+
+        /* 项目卡片内的drawer-content不需要transform */
+        .project-card.drawer-wrapper {
+            overflow: hidden;
+        }
+
+        .project-card.drawer-wrapper .drawer-content {
+            transform: none !important;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: visible;
+        }
+
+        .project-card.drawer-wrapper .drawer-content.visible {
+            transform: none !important;
+        }
+
+        .project-card.drawer-wrapper .project-card-overlay {
+            transform: translateY(100%) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .project-card.drawer-wrapper:hover .project-card-overlay {
+            transform: translateY(0) !important;
+        }
+
+        .project-card-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .project-card-desc {
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ========== CONTACT SECTION - 横向三栏 ========== */
+        .contact-content {
+            background: var(--white);
+            border: var(--border-width) solid var(--border);
+            padding: 60px;
+            text-align: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .contact-title {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .contact-desc {
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            text-align: center !important;
+            width: 100%;
+            display: block;
+        }
+
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 30px 20px;
+            background: var(--bg);
+            border: var(--border-width-sm) solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: background 0s;
+            margin: -1px;
+        }
+
+        .contact-link:hover {
+            background: var(--highlight);
+        }
+
+        .contact-link-icon {
+            font-size: 32px;
+        }
+
+        .contact-link-text {
+            font-size: 13px;
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: var(--bg);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 20px 60px;
+            background: var(--white);
+            border-bottom: var(--border-width) solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            flex: 1;
+            margin-right: 20px;
+            line-height: 1.4;
+        }
+
+        .modal-close {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0s;
+        }
+
+        .modal-close:hover {
+            background: var(--highlight);
+        }
+
+        .modal-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-bottom: 40px;
+        }
+
+        .modal-tag {
+            padding: 10px 20px;
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: -1px;
+        }
+
+        .modal-tag.primary {
+            background: var(--highlight);
+        }
+
+        .modal-section {
+            margin-bottom: 60px;
+        }
+
+        .modal-section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modal-section-title .num {
+            width: 40px;
+            height: 40px;
+            background: var(--text);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .modal-text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .modal-text p {
+            margin-bottom: 16px;
+            max-width: 800px;
+        }
+
+        .modal-text strong {
+            font-weight: 600;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            margin: 30px 0;
+        }
+
+        .modal-grid-item {
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            padding: 30px;
+            text-align: center;
+            margin: -1px;
+        }
+
+        .modal-grid-item-value {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 0.9;
+        }
+
+        .modal-grid-item-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 8px;
+        }
+
+        .modal-highlight-box {
+            background: var(--highlight);
+            border: var(--border-width-sm) solid var(--border);
+            padding: 24px;
+            margin: 30px 0;
+        }
+
+        .modal-highlight-box p {
+            margin: 0;
+            font-weight: 700;
+            max-width: 800px;
+        }
+
+        .modal-project-subtitle {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* 媒体容器样式：2px黑边框+白色padding */
+        .modal-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            margin: 30px 0;
+        }
+
+        .modal-image-grid img {
+            width: 100%;
+            border: var(--border-width-sm) solid var(--border);
+            padding: 8px;
+            background: var(--white);
+            margin: -1px;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .modal-image-single {
+            margin: 30px 0;
+        }
+
+        .modal-image-single img {
+            width: 100%;
+            border: var(--border-width-sm) solid var(--border);
+            padding: 10px;
+            background: var(--white);
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 14px;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border: var(--border-width-sm) solid var(--border);
+        }
+
+        .modal-table th {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--text);
+            color: var(--white);
+        }
+
+        .modal-table td {
+            background: var(--white);
+        }
+
+        .modal-link-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: background 0s;
+            margin-top: 20px;
+        }
+
+        .modal-link-card:hover {
+            background: var(--highlight);
+        }
+
+        .modal-link-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-link-card-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--text);
+            transition: background 0s;
+        }
+
+        .modal-link-card-item:hover {
+            background: var(--highlight);
+        }
+
+        .modal-link-card-item-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .modal-link-card-item-desc {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.8rem;
+            margin-top: 3px;
+        }
+
+        /* 模态框内部小组件 - 2px边框 */
+        .modal-inner-box {
+            background: var(--white);
+            border: var(--border-width-sm) solid var(--border);
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .modal-inner-box h5 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            padding: 40px 60px;
+            background: var(--text);
+            color: var(--white);
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        footer p {
+            text-align: center;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 15vw;
+            }
+            
+            .section-title {
+                font-size: 12vw;
+            }
+            
+            .about-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-title,
+            .contact-desc {
+                text-align: center !important;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: block;
+            }
+            
+            .hero,
+            .section {
+                padding: 60px 24px;
+            }
+            
+            .hero-title {
+                font-size: 18vw;
+            }
+            
+            .section-title {
+                font-size: 15vw;
+            }
+            
+            .hero-desc {
+                font-size: 18px;
+            }
+            
+            .modal-header {
+                padding: 15px 20px;
+            }
+            
+            .modal-title {
+                font-size: 14px;
+                margin-right: 10px;
+                word-break: break-word;
+            }
+            
+            .modal-close {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+                flex-shrink: 0;
+            }
+            
+            .modal-body {
+                padding: 40px 24px;
+            }
+            
+            .contact-content {
+                padding: 40px 24px;
+            }
+
+            .contact-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-title,
+            .contact-desc {
+                text-align: center !important;
+                width: 100%;
+            }
+            
+            .modal-image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cursor {
+                display: none;
+            }
+            
+            html {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    
+    <!-- Slinky Canvas -->
+    <canvas id="slinky-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#hero" class="nav-logo">Q</a>
+        <div class="nav-tabs">
+            <a href="#hero" class="nav-tab active">首页</a>
+            <a href="#about" class="nav-tab">关于我</a>
+            <a href="#projects" class="nav-tab">项目</a>
+            <a href="#contact" class="nav-tab">联系</a>
+        </div>
+        <button class="nav-toggle">☰</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-label">Product Manager Portfolio</div>
+        <div class="drawer-wrapper">
+            <div class="drawer-content">
+                <h1 class="hero-title">
+                    <span>Hi, I'm Qing</span>
+                    <span class="highlight">产品实习生（AIGC产品/视觉方向）</span>
+                </h1>
+            </div>
+        </div>
+        <div class="drawer-wrapper" style="transition-delay: 0.1s;">
+            <div class="drawer-content">
+                <p class="hero-desc">
+                    在美学与逻辑的重叠处，翻译生活的另一种可能。设计是我的底色，产品是我的语言。我习惯于在两种语境间穿梭，让每一份体验都听得见回响。
+                </p>
+            </div>
+        </div>
+        <div class="drawer-wrapper" style="transition-delay: 0.2s;">
+            <div class="drawer-content">
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">
+                        查看作品
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#contact" class="btn">联系我</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section - 完整保留存档内容 -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <div class="section-label">About Me</div>
+            <div class="drawer-wrapper">
+                <div class="drawer-content">
+                    <h2 class="section-title">关于我</h2>
+                </div>
+            </div>
+        </div>
+        <div class="about-grid">
+            <div class="about-card drawer-wrapper">
+                <div class="drawer-content">
+                    <div class="about-card-icon">🎓</div>
+                    <h3 class="about-card-title">教育背景</h3>
+                    <div class="about-card-content">
+                        <p><strong>华中师范大学</strong> | 美术学院 | 2021级视觉传达专业 | 本科 | 排名第一</p>
+                        <p><strong>中国传媒大学</strong> | 广告与品牌学院 | 2025级品牌设计硕士 | 在读</p>
+                        <p><strong>综合素质</strong>：本硕双设计背景，累计获得国际级、国家级、省市级奖项几十余项，自驱力与自我管理能力突出</p>
+                        <p><strong>核心荣誉</strong>：校三好学生（2次）、博雅丹桂奖学金（2次）、黄永林学生文化创新励志奖学金、中国传媒大学学业奖学金二等奖</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-card drawer-wrapper" style="transition-delay: 0.1s;">
+                <div class="drawer-content">
+                    <div class="about-card-icon">💼</div>
+                    <h3 class="about-card-title">求职意向</h3>
+                    <div class="about-card-content">
+                        <p><strong>岗位</strong>：产品实习生（AIGC产品/视觉方向）</p>
+                        <p><strong>到岗时间</strong>：月内到岗</p>
+                        <p><strong>联系方式</strong>：18986226542 | 504421567@qq.com</p>
+                        <p><strong>自我评价</strong>：本硕双设计背景，深耕AIGC视觉赛道，具备从用户洞察、方案设计到落地迭代的全流程产品执行能力。擅长将设计思维与产品提效降本目标结合，依托AIGC工具与原型设计能力，落地多项可量化业务成果</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-card drawer-wrapper" style="transition-delay: 0.2s;">
+                <div class="drawer-content">
+                    <div class="about-card-icon">🌟</div>
+                    <h3 class="about-card-title">核心能力</h3>
+                    <div class="about-card-content">
+                        <p><strong>AIGC实操与工业化落地</strong>：深度掌握ComfyUI节点式工作流部署与LoRA模型基础微调；精通Kling AI、Seko、Dreamina、Tapnow、Veo等多模态生成工具，熟练应用Midjourney & Stable Diffusion进行视觉资产生成与Prompt调优</p>
+                        <p><strong>产品基础能力</strong>：擅长UCD用户中心设计方法论，具备用户分层调研、竞品深度解构与功能分析能力；能配合完成从需求挖掘、策略落地到成果复盘的产品执行闭环，拥有10人以上跨部门协同与SOP标准化定义、落地经验</p>
+                        <p><strong>设计与工具能力</strong>：精通Figma全链路设计，可借助vibe coding快速搭建高保真产品原型与交互Demo；熟练运用Adobe CC全家桶(PS/AI/PR/AE)完成全链路视觉交付</p>
+                        <p><strong>通用软实力</strong>：英语CET-6(500+)，具备海外产品本地化调研基础；擅长产品执行层面的进度跟进、数据整理与结果落地</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-card drawer-wrapper" style="transition-delay: 0.3s;">
+                <div class="drawer-content">
+                    <div class="about-card-icon">💻</div>
+                    <h3 class="about-card-title">实习经历</h3>
+                    <div class="about-card-content">
+                        <p><strong>NewsBreak北京花牛信息技术有限公司 | 产品实习生(AIGC方向) | 2025.12-至今</strong></p>
+                        <p>聚焦AIGC漫剧工业化生产、广告自动化模版体系搭建，参与OxygeonAI自动化平台竞品拆解与功能分析。通过ComfyUI自动化工作流部署，将一次成片率由20%提升至90%以上，素材废片率降低70%，生产效率提升300%</p>
+                        <p><strong>武汉礼稻商贸有限公司 | 包装设计师 | 2024.11-2025.8</strong></p>
+                        <p>将AIGC工具融入包装设计全流程，负责品牌视觉推导、创意执行到落地打样的全链路工作。通过AI辅助设计将设计稿迭代效率提升30%，成品还原率达95%+</p>
+                        <p><strong>海沛美学/武汉钢城四中 | 美术助教 | 2022.01-2022.04 / 2023.5-2023.7</strong></p>
+                        <p>针对3-8岁低龄启蒙、15-18岁艺考升学两类分层用户，协助完成美育内容产品迭代。引入AIGC工具生成适配课堂教学的图片素材，实现单套课程研发周期缩短50%，艺考年龄段学生班级专业过线率提升至95%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section projects-section" id="projects">
+        <div class="section-header">
+            <div class="section-label">Projects</div>
+            <div class="drawer-wrapper">
+                <div class="drawer-content">
+                    <h2 class="section-title">我做了些什么</h2>
+                </div>
+            </div>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card drawer-wrapper" onclick="openModal('oxygeon')">
+                <div class="drawer-content">
+                    <img src="https://www.coze.cn/s/2TIEwhGpKFc/?width_height=2880x1800" alt="Oxygeon.ai">
+                    <div class="project-card-overlay">
+                        <h3 class="project-card-title">Oxygeon.ai</h3>
+                        <p class="project-card-desc">AI广告创意全流程生产系统</p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card drawer-wrapper" style="transition-delay: 0.1s;" onclick="openModal('manju')">
+                <div class="drawer-content">
+                    <img src="https://www.coze.cn/s/jebBaGgMcoQ/?width_height=768x1365" alt="漫剧项目">
+                    <div class="project-card-overlay">
+                        <h3 class="project-card-title">AIGC漫剧</h3>
+                        <p class="project-card-desc">多模态生成内容工业化生产</p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card drawer-wrapper" style="transition-delay: 0.2s;" onclick="openModal('ipx')">
+                <div class="drawer-content">
+                    <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/1_e2f3f72d.png?sign=2089600627-f989be76b9-0-de58d494d85779dca5d60098810d246510e74fd92c263211c42090945d66e6c4" alt="iπ×朝阳公园">
+                    <div class="project-card-overlay">
+                        <h3 class="project-card-title">iπ×朝阳公园</h3>
+                        <p class="project-card-desc">品牌交互产品设计</p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card drawer-wrapper" style="transition-delay: 0.3s;" onclick="openModal('qihang')">
+                <div class="drawer-content">
+                    <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/734d21b288334d529e6a397801f8d2d4.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=202603171714579F2758308189487BF978&rrcfp=8a172a1a&x-expires=1774343697&x-signature=DdfOsiPhFYt1XTCUmo5KUDAkagg%3D" alt="启航站">
+                    <div class="project-card-overlay">
+                        <h3 class="project-card-title">启航站</h3>
+                        <p class="project-card-desc">高校升学就业一站式服务平台</p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card drawer-wrapper" style="transition-delay: 0.4s;" onclick="openModal('pinhaofan')">
+                <div class="drawer-content">
+                    <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/Frame_106_e0792394.png?sign=2089600641-88006a6982-0-11f11a963845fdc18fd767eabd4a667479f5eceb0234f800fbffa537deae0cce" alt="拼好饭">
+                    <div class="project-card-overlay">
+                        <h3 class="project-card-title">拼好饭</h3>
+                        <p class="project-card-desc">AIGC视觉化设计实践</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section - 横向三栏并列 -->
+    <section class="section" id="contact">
+        <div class="contact-content drawer-wrapper">
+            <div class="drawer-content">
+                <h2 class="contact-title">期待与您沟通</h2>
+                <p class="contact-desc">如果您对我的作品感兴趣，欢迎随时联系我</p>
+                <div class="contact-links">
+                    <a href="tel:18986226542" class="contact-link">
+                        <span class="contact-link-icon">📞</span>
+                        <span class="contact-link-text">18986226542</span>
+                    </a>
+                    <a href="mailto:504421567@qq.com" class="contact-link">
+                        <span class="contact-link-icon">📧</span>
+                        <span class="contact-link-text">504421567@qq.com</span>
+                    </a>
+                    <a href="javascript:void(0)" class="contact-link">
+                        <span class="contact-link-icon">🌐</span>
+                        <span class="contact-link-text">微信：18986226542</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 QING's Portfolio — All Rights Reserved</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">项目详情</h2>
+            <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
+    </div>
+
+    <script>
+        // ========== CUSTOM CURSOR ==========
+        const cursor = document.getElementById('cursor');
+        let cursorX = 0, cursorY = 0;
+        let targetX = 0, targetY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (targetX - cursorX) * 0.35;
+            cursorY += (targetY - cursorY) * 0.35;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effect
+        document.querySelectorAll('a, button, .project-card, .about-card, .contact-link, .btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // ========== SLINKY EFFECT ==========
+        const canvas = document.getElementById('slinky-canvas');
+        const ctx = canvas.getContext('2d');
+        let slinkyPoints = [];
+        const maxPoints = 20;
+        const slinkyDelay = 0.08;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        for (let i = 0; i < maxPoints; i++) {
+            slinkyPoints.push({ x: 0, y: 0 });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            slinkyPoints[0].x = e.clientX;
+            slinkyPoints[0].y = e.clientY;
+        });
+
+        function animateSlinky() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update points with delay
+            for (let i = 1; i < slinkyPoints.length; i++) {
+                slinkyPoints[i].x += (slinkyPoints[i - 1].x - slinkyPoints[i].x) * slinkyDelay;
+                slinkyPoints[i].y += (slinkyPoints[i - 1].y - slinkyPoints[i].y) * slinkyDelay;
+            }
+
+            // Draw slinky rings
+            for (let i = 0; i < slinkyPoints.length; i++) {
+                const point = slinkyPoints[i];
+                const size = 10 + (i * 2);
+                const alpha = 1 - (i / slinkyPoints.length);
+                
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.6})`;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(animateSlinky);
+        }
+        animateSlinky();
+
+        // ========== DRAWER ANIMATION ==========
+        const drawerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.drawer-content').forEach(el => {
+            drawerObserver.observe(el);
+        });
+
+        // ========== NAVIGATION ACTIVE STATE ==========
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('href') === '#' + current) {
+                    tab.classList.add('active');
+                }
+            });
+        });
+
+        // ========== MODAL ==========
+        function openModal(project) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            
+            const content = getProjectContent(project);
+            title.textContent = content.title;
+            body.innerHTML = content.html;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            cursor.style.display = 'none';
+            
+            // 自动滚动到顶端
+            modal.scrollTo(0, 0);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            cursor.style.display = 'block';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ========== PROJECT CONTENT - 完整保留存档内容 ==========
+        function getProjectContent(project) {
+            const contents = {
+                oxygeon: {
+                    title: 'Oxygeon.ai – AI广告创意全流程生产系统',
+                    html: `
+                        
+                        <div class="modal-tags">
+                            <span class="modal-tag primary">AIGC</span>
+                            <span class="modal-tag">竞品分析</span>
+                            <span class="modal-tag">功能设计</span>
+                            <span class="modal-tag">2025.12-至今</span>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">01</span>AI视频广告工具竞品深度拆解</h3>
+                            <div class="modal-text">
+                                <p><strong>核心职责</strong>：负责Oxygeon.ai产品功能拆解、竞品分析、数字人训练流程设计及广告模板体系构建，从0到1搭建"爆款广告复刻"核心功能模块，支撑产品实现3.2x平均ROAS的业务目标。</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">02</span>赛道定位与差异化分析</h3>
+                            <div class="modal-text">
+                                <p><strong>Oxygeon核心定位</strong>：AI广告创意全流程生产系统，聚焦"爆款广告复刻+素材全链路加工"，通过120+反向拆解的高绩效广告模板构建核心壁垒，打造从素材生成、剪辑优化到跨平台适配的完整工作流。</p>
+                                <p><strong>赛道差异对比</strong>：</p>
+                                <p>• <strong>Oxygeon & Creatify</strong>（营销驱动型）：属于"URL-to-Ad"赛道，核心逻辑是抓取商品信息→AI脚本生成→素材库匹配/数字人合成→投放视频，关注ROI和工业化生产效率</p>
+                                <p>• <strong>OpusClip</strong>（内容驱动型）：属于"Long-to-Short"赛道，核心逻辑是长视频理解→精彩片段提取→智能裁切→字幕增强，关注内容理解力和分发流量表现</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">03</span>业务流程拆解与核心能力</h3>
+                            <div class="modal-text">
+                                <p><strong>三段式工作流设计</strong>：</p>
+                                <p>1. <strong>创意生产层</strong>：主导设计120+高绩效广告模板体系，通过反向工程拆解行业爆款广告逻辑，构建"模板选择→参数配置→创意生成"的高效路径</p>
+                                <p>2. <strong>素材加工层</strong>：设计长视频转短视频、AI智能字幕、智能重构图等功能模块，解决多平台素材适配痛点，提升素材复用率80%+</p>
+                                <p>3. <strong>素材获取/适配层</strong>：实现4K无水印多平台视频下载功能，打通YouTube/TikTok/Ins素材获取渠道，降低素材获取成本</p>
+                                <p><strong>核心技术落地</strong>：</p>
+                                <p>• 主导数字人训练流程优化，通过多模态数据融合提升数字人口型同步准确率至92%</p>
+                                <p>• 设计广告模板动态参数系统，支持用户自定义品牌风格、产品卖点等核心要素，模板复用率提升65%</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">04</span>产品架构与功能模块</h3>
+                            <div class="modal-text">
+                                <p><strong>功能模块拆解</strong>：</p>
+                            </div>
+                            <div class="modal-inner-box">
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                                    <div style="padding: 15px; background: var(--bg); border: var(--border-width-sm) solid var(--border);">
+                                        <h5 style="color: var(--text); margin-bottom: 12px; font-weight: 700;">创意生产模块</h5>
+                                        <ul style="list-style: none; padding: 0; margin: 0;">
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• 120+高绩效广告模板</li>
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• AI文生视频功能</li>
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• 自定义AI数字人</li>
+                                            <li style="padding-left: 16px; position: relative;">• AI口播视频生成</li>
+                                        </ul>
+                                    </div>
+                                    <div style="padding: 15px; background: var(--bg); border: var(--border-width-sm) solid var(--border);">
+                                        <h5 style="color: var(--text); margin-bottom: 12px; font-weight: 700;">素材加工模块</h5>
+                                        <ul style="list-style: none; padding: 0; margin: 0;">
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• 长视频转短视频</li>
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• AI智能字幕生成</li>
+                                            <li style="margin-bottom: 8px; padding-left: 16px; position: relative;">• 4K无水印视频下载</li>
+                                            <li style="padding-left: 16px; position: relative;">• 跨平台比例适配</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">05</span>竞品功能对比与关键洞察</h3>
+                            <table class="modal-table">
+                                <thead>
+                                    <tr>
+                                        <th>维度</th>
+                                        <th>Oxygeon.ai</th>
+                                        <th>Creatify.ai</th>
+                                        <th>OpusClip</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>输入源</strong></td>
+                                        <td>URL/图片/文本/自定义模板</td>
+                                        <td>商品链接(Amazon/Shopify)</td>
+                                        <td>YouTube链接/文件</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>核心AI能力</strong></td>
+                                        <td>自定义数字人、多模态素材融合</td>
+                                        <td>数字人自选、多语言配音</td>
+                                        <td>智能人脸追踪、高光提取</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>编辑自由度</strong></td>
+                                        <td>★★★★★ (全参数可调)</td>
+                                        <td>★★★★☆ (支持图层调节)</td>
+                                        <td>★★☆☆☆ (侧重一键生成)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="modal-text">
+                                <p style="margin-top: 20px;"><strong>竞品界面展示</strong>：</p>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0;">
+                                <div class="modal-inner-box" style="padding: 15px; display: flex; flex-direction: column;">
+                                    <div style="flex: 1;">
+                                        <img src="https://www.coze.cn/s/2TIEwhGpKFc/?width_height=2880x1800" alt="Oxygeon.ai界面" style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--border); margin-bottom: 12px;">
+                                        <p style="text-align: center; margin: 0; font-size: 0.9rem; font-weight: 700;">Oxygeon.ai</p>
+                                        <p style="text-align: center; margin: 6px 0 0 0; font-size: 0.75rem; opacity: 0.7;">Ads that win, built by AI</p>
+                                    </div>
+                                    <a href="https://www.oxygeon.ai" target="_blank" style="display: block; text-align: center; text-decoration: none; color: var(--text); font-size: 0.85rem; padding: 10px 0; background: var(--highlight); border: 2px solid var(--border); font-weight: 700; margin-top: 12px;">访问官网 →</a>
+                                </div>
+                                <div class="modal-inner-box" style="padding: 15px; display: flex; flex-direction: column;">
+                                    <div style="flex: 1;">
+                                        <img src="https://s.coze.cn/image/BHVBTqsK9s4/" alt="Creatify.ai界面" style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--border); margin-bottom: 12px;">
+                                        <p style="text-align: center; margin: 0; font-size: 0.9rem; font-weight: 700;">Creatify.ai</p>
+                                        <p style="text-align: center; margin: 6px 0 0 0; font-size: 0.75rem; opacity: 0.7;">The fastest way to create video ads</p>
+                                    </div>
+                                    <a href="https://creatify.ai" target="_blank" style="display: block; text-align: center; text-decoration: none; color: var(--text); font-size: 0.85rem; padding: 10px 0; background: var(--highlight); border: 2px solid var(--border); font-weight: 700; margin-top: 12px;">访问官网 →</a>
+                                </div>
+                                <div class="modal-inner-box" style="padding: 15px; display: flex; flex-direction: column;">
+                                    <div style="flex: 1;">
+                                        <img src="https://www.novatools.cn/_next/image?url=https%3A%2F%2Fassets.novatools.cn%2Fimages%2F2025%2F03%2F98dbaae6534c.jpeg&w=3840&q=75" alt="OpusClip界面" style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--border); margin-bottom: 12px;">
+                                        <p style="text-align: center; margin: 0; font-size: 0.9rem; font-weight: 700;">OpusClip</p>
+                                        <p style="text-align: center; margin: 6px 0 0 0; font-size: 0.75rem; opacity: 0.7;">一键生成短视频片段</p>
+                                    </div>
+                                    <a href="https://www.opus.pro" target="_blank" style="display: block; text-align: center; text-decoration: none; color: var(--text); font-size: 0.85rem; padding: 10px 0; background: var(--highlight); border: 2px solid var(--border); font-weight: 700; margin-top: 12px;">访问官网 →</a>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-text">
+                                <p><strong>关键洞察</strong>：</p>
+                                <p>• 输入即门槛：Oxygeon的多源输入设计显著降低了创意生产门槛，使专业用户与新手用户均可高效产出内容</p>
+                                <p>• 技术边界平衡：通过模块化设计解决数字人表情生硬问题，在"生成效率"与"自然度"间找到最优平衡点</p>
+                                <p>• 用户心智构建：强调"模板驱动+自定义调节"的混合模式，既满足效率需求，又保留创意空间</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">06</span>商业模式与产品迭代策略</h3>
+                            <div class="modal-text">
+                                <p><strong>商业价值实现</strong>：</p>
+                                <p>• 降本：减少创意试错成本60%+，降低剪辑人力成本80%</p>
+                                <p>• 增效：素材生产效率提升60%+，模板复用率提升80%+</p>
+                                <p>• 增收：助力广告主实现3.2x平均ROAS，服务5000+品牌/agency客户</p>
+                                <p><strong>迭代方向规划</strong>：</p>
+                                <p>1. <strong>短期</strong>：新增"模板-转化数据"标签体系，实现模板效果量化，提升匹配精准度</p>
+                                <p>2. <strong>中期</strong>：开放API与Meta/TikTok投放平台对接，打通"生成-投放"闭环</p>
+                                <p>3. <strong>长期</strong>：建立"创意素材库-用户投放数据"闭环，实现数据驱动的智能模板推荐</p>
+                            </div>
+                        </div>
+                    `
+                },
+                manju: {
+                    title: 'AIGC漫剧工业化生产 – 多模态生成内容自动化生产系统',
+                    html: `
+                        
+                        <div class="modal-tags">
+                            <span class="modal-tag primary">AIGC</span>
+                            <span class="modal-tag">多模态生成</span>
+                            <span class="modal-tag">自动化工作流</span>
+                            <span class="modal-tag">2025.12-至今</span>
+                        </div>
+                        
+                        <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 40px;">
+                            <div class="modal-grid-item">
+                                <div class="modal-grid-item-label">项目周期</div>
+                                <div class="modal-grid-item-value" style="font-size: 20px;">2025.12 - 至今</div>
+                            </div>
+                            <div class="modal-grid-item">
+                                <div class="modal-grid-item-label">核心角色</div>
+                                <div class="modal-grid-item-value" style="font-size: 20px;">AI产品负责人</div>
+                            </div>
+                            <div class="modal-grid-item">
+                                <div class="modal-grid-item-label">核心价值</div>
+                                <div class="modal-grid-item-value" style="font-size: 20px;">AIGC规模化生产验证</div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">01</span>项目背景&核心痛点</h3>
+                            <div class="modal-highlight-box">
+                                <p>聚焦<strong>AIGC漫剧工业化生产</strong>与广告自动化模版体系搭建，针对行业内AI漫剧「视觉一致性差、废片率高、生产周期长」的核心痛点，主导从0-1落地AIGC全链路自动化生产，验证提示词调优+多模态生成的落地可行性。</p>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>核心痛点（AI产品视角拆解）</strong></p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-weight: 700; color: #EF4444; margin-bottom: 8px;">生成端</div>
+                                    <p style="margin: 0; font-size: 0.85rem;">多模态模型生成内容随机性强，视觉风格不统一，一次成片率仅<strong>20%</strong></p>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-weight: 700; color: #F59E0B; margin-bottom: 8px;">效率端</div>
+                                    <p style="margin: 0; font-size: 0.85rem;">人工调整提示词成本高，单集漫剧生产周期达<strong>「天级」</strong>，无法满足规模化需求</p>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-weight: 700; color: #10B981; margin-bottom: 8px;">落地端</div>
+                                    <p style="margin: 0; font-size: 0.85rem;">缺乏标准化的提示词模版与多模态模型协同流程，生产流程碎片化</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">02</span>提示词调优体系搭建</h3>
+                            <div class="modal-highlight-box">
+                                <p style="font-weight: 700;">🎯 从「随机生成」到「标准化产出」</p>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>痛点拆解</strong>：初始阶段提示词仅包含基础指令（如「生成漫剧画面」），缺乏风格/参数约束，导致生成内容偏差大</p>
+                                <p><strong>优化思路</strong>：</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">📐 三层提示词框架</div>
+                                    <p style="margin: 0; font-size: 0.85rem;">搭建「基础指令+风格约束+参数限定」三层提示词模版框架，明确角色风格、画面比例、帧率等核心参数</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">🔄 迭代机制</div>
+                                    <p style="margin: 0; font-size: 0.85rem;">设计「生成结果→参数调整→效果验证」闭环，沉淀最优提示词组合</p>
+                                </div>
+                            </div>
+                            <div class="modal-image-single">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/IMG_1388_7bdc6b8b.jpg?sign=2089600642-7d87ccf597-0-3fa7c96f3663b10303045d9e6b94b934e1660c0ef2966ef48918290fededa48f" alt="提示词调优记录表">
+                            </div>
+                            <div class="modal-highlight-box" style="background: #E8F5E9; border-color: #10B981;">
+                                <p><strong>✅ 落地成果</strong>：输出标准化提示词模版库，覆盖<strong>8类</strong>漫剧场景，用户仅需替换核心变量即可生成符合要求的内容；一次成片率从<strong>20%</strong>提升至<strong>90%以上</strong>，素材废片率降低<strong>70%</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">03</span>多模态生成协同落地</h3>
+                            <div class="modal-highlight-box">
+                                <p style="font-weight: 700;">🔗 跨模型协同的自动化流程设计</p>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>模型选型（AI产品技术视角）</strong></p>
+                            </div>
+                            <div class="modal-inner-box" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                <div style="text-align: center; padding: 10px;">
+                                    <div style="font-weight: 700; font-size: 0.9rem;">Gemini</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7;">视觉风格提示词锁定</div>
+                                </div>
+                                <span style="font-size: 1.5rem;">→</span>
+                                <div style="text-align: center; padding: 10px;">
+                                    <div style="font-weight: 700; font-size: 0.9rem;">Nano banana</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7;">文生图</div>
+                                </div>
+                                <span style="font-size: 1.5rem;">→</span>
+                                <div style="text-align: center; padding: 10px;">
+                                    <div style="font-weight: 700; font-size: 0.9rem;">Veo3</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7;">文生视频</div>
+                                </div>
+                                <span style="font-size: 1.5rem;">→</span>
+                                <div style="text-align: center; padding: 10px;">
+                                    <div style="font-weight: 700; font-size: 0.9rem;">Dreamina</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7;">多模态融合</div>
+                                </div>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>自动化落地</strong>：部署ComfyUI自动化工作流，将多模态生成流程产品化，减少人工介入环节；制定模型输出验收标准，确保跨模型生成内容的一致性</p>
+                            </div>
+                            <div class="modal-highlight-box" style="background: #E8F5E9; border-color: #10B981;">
+                                <p><strong>✅ 落地成果</strong>：单集漫剧生产周期从「天级」压缩至「小时级」，生产效率提升<strong>300%</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">04</span>工作流迭代复盘（V1.0→V3.0）</h3>
+                            <table class="modal-table">
+                                <thead>
+                                    <tr>
+                                        <th>版本</th>
+                                        <th>模式</th>
+                                        <th>问题</th>
+                                        <th>效果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="color: #EF4444; font-weight: 700;">V1.0</td>
+                                        <td>纯人工编写提示词+单模型</td>
+                                        <td>效率低、风格不一致</td>
+                                        <td>成片率40%，效率+50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #F59E0B; font-weight: 700;">V2.0</td>
+                                        <td>提示词模版+多模型手动</td>
+                                        <td>模型协同成本高</td>
+                                        <td>成片率70%，效率+200%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #10B981; font-weight: 700;">V3.0</td>
+                                        <td>自动化工作流+LoRA微调</td>
+                                        <td>部分场景出现突兀镜头</td>
+                                        <td>成片率90%+，效率+300%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="modal-text">
+                                <p><strong>核心迭代思考</strong>：</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 0.85rem; font-weight: 700;">技术落地核心</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 5px;">提示词工程+模型协同+流程自动化 三位一体</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 0.85rem; font-weight: 700;">产品价值核心</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 5px;">用数据验证提效降本</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 0.85rem; font-weight: 700;">可迁移经验</div>
+                                    <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 5px;">标准化模版+自动化流程</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">05</span>漫剧成果展示</h3>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(5, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/jimeng-2026-03-19-4614-Can_Kao_Tu_Pian_4De_Feng_Ge_Yi_Tu_Pian_3Wei_Bei_Jing_Hua_Mian_Zhong_Xin_Shi_Tu_Pian_1De_Li_Fu_Si_Fa_Guan_Cong_Bei_Hou_Qing_Qing_Da_d8a7497d.png?sign=2089600643-1bed2fdfe9-0-3a0147813819609e07706a573b402151d2b97b2db1a273c9ebe3ff4d2823671b" alt="漫剧封面1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/jimeng-2026-03-20-1266-Ba_Tu_Pian_De_Zi_Ti_He_Zhuang_Shi_Bian_Cheng_She_Hua_De_Zhi_Gan_Yan_Se_Liang_Yi_Xie_Nan_Xing_Ren_Wu_Huan_Cheng_Tu_Si_Yuan_Chu_De_Shen_Se_Qun_Zi_Ren_0fb2bd94.png?sign=2089600644-b60a98d8a5-0-9546a7b0083ccba12bcdfeafa0ee6429dad0f465cfe2108f846fb395d97c9677" alt="漫剧封面2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/jimeng-2026-03-20-3454-Jiang_Biao_Ti_THE_BIBLE_Zhong_De_THE_Diao_Zheng_Wei_Yu_BIBLE_Yi_Yang_Da_Bao_Chi_Tu_Pian_79f3fcdf.png?sign=2089600645-ee26d150fa-0-c90dab57a35fa9c1337fa055444c1670a56c7cc5ce236e9e521f1613fe3fdce9" alt="漫剧封面3">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/jimeng-2026-03-20-7523-Mei_Shi_Xie_Shi_Man_Hua_Feng_Ge_Chong_Man_Bao_Fa_Li_De_Huang_Dan_Gou_Tu._Cai_Yong_Yu_Yan_Jing_Tou_Shi_Jiao_Chan_Sheng_Qiang_Lie_De_Shi_Jue_La_Shen._Hua_e77976f4.png?sign=2089600645-393ed1de6a-0-3c8774c18e0f3aade6fb17b5b7f9c5d3211a8bda52246dc20e483d125124ff5a" alt="漫剧封面4">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/jimeng-2026-03-20-8127-Mei_Shi_Man_Hua_Shu_Feng_Mian_Feng_Ge_Xie_Shi_Xi_Jie_Yi_Shu_Xi_Ju_Xing_Dong_Zuo_Lang_Man._Yi_Wei_Gao_Da_Cu_Guang_Ying_Jun_De_Bai_Ren_Nan_Zi_10f72150.png?sign=2089600646-a67a4a00ce-0-7076fab5fbc53c7e0df73e08547fd89aad9a166bf7ccc5e86b126df42bc66c1c" alt="漫剧封面5">
+                            </div>
+                        </div>
+
+                        <a href="https://acnmjl4wgife.feishu.cn/wiki/B8gzwC8Zzid4U0kfnGYcrdYYn71" target="_blank" class="modal-link-card">
+                            <span>查看漫剧作品汇总（飞书文档）</span>
+                            <span>→</span>
+                        </a>
+                    `
+                },
+                ipx: {
+                    title: 'IΠ×朝阳公园 – 品牌交互产品设计',
+                    html: `
+                        
+                        <div class="modal-tags">
+                            <span class="modal-tag primary">品牌设计</span>
+                            <span class="modal-tag">用户洞察</span>
+                            <span class="modal-tag">交互设计</span>
+                            <span class="modal-tag">2025.10-2025.12</span>
+                        </div>
+                        
+                        <!-- 流程标签 -->
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; padding: 15px; background: var(--highlight); border: var(--border-width-sm) solid var(--border);">
+                            <span style="padding: 6px 14px; background: var(--text); color: white; border-radius: 0; font-size: 0.85rem; font-weight: 700;">背景分析</span>
+                            <span style="color: var(--text);">→</span>
+                            <span style="padding: 6px 14px; background: var(--text); color: white; border-radius: 0; font-size: 0.85rem; font-weight: 700;">用户洞察</span>
+                            <span style="color: var(--text);">→</span>
+                            <span style="padding: 6px 14px; background: var(--text); color: white; border-radius: 0; font-size: 0.85rem; font-weight: 700;">策略定位</span>
+                            <span style="color: var(--text);">→</span>
+                            <span style="padding: 6px 14px; background: var(--text); color: white; border-radius: 0; font-size: 0.85rem; font-weight: 700;">设计落地</span>
+                            <span style="color: var(--text);">→</span>
+                            <span style="padding: 6px 14px; background: var(--text); color: white; border-radius: 0; font-size: 0.85rem; font-weight: 700;">体验闭环</span>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">01</span>背景分析</h3>
+                            <div class="modal-text">
+                                <p><strong>市场机会</strong>：都市i人情绪消费崛起 + "20分钟公园效应"走红</p>
+                                <p><strong>痛点识别</strong>：朝阳公园缺乏内向人群细分体验，设施老旧、官方路线无内向需求考量</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">02</span>用户洞察</h3>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-grid-item">
+                                    <div class="modal-grid-item-value" style="font-size: 36px;">72.37%</div>
+                                    <div class="modal-grid-item-label">用户优先找安静区域</div>
+                                </div>
+                                <div class="modal-grid-item">
+                                    <div class="modal-grid-item-value" style="font-size: 36px;">82.9%</div>
+                                    <div class="modal-grid-item-label">愿意尝试安静点位筛选工具</div>
+                                </div>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>调研方法</strong>：80份有效问卷 + 用户访谈</p>
+                                <p><strong>用户画像</strong>：都市年轻i人（20-35岁）、情绪消费群体、公园轻体验者</p>
+                                <p><strong>核心洞察</strong>：i人需要「低社交压力、高自主体验」的专属空间</p>
+                            </div>
+                            <div class="modal-image-grid">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/45_a8542076.png?sign=2089600635-d65b586fc1-0-4f5b4441cd62c6c9623f55107e3c1e7ecafc90e4fbd4c937d3be91c30b01d08f" alt="核心发现数据1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/46_54752811.png?sign=2089600636-33a55eb76c-0-5bbf6445ecfe96c6cf97b6428b68fb55added94d80f2b446e20b6d521c1560ee" alt="核心发现数据2">
+                            </div>
+                            <!-- 核心洞察图 - 米黄色底 -->
+                            <div style="background: #FDF6E3; padding: 20px; border-radius: 0; margin: 15px 0; border: var(--border-width-sm) solid var(--border);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/51_21dad889.png?sign=2089600639-4aac10fbca-0-cec16c528b538ce45c0705618fb123fc2204f55ded9117c2f8b1e5a20add3ed0" alt="核心洞察图1" style="width: 100%; margin-bottom: 15px;">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/53_b7653324.png?sign=2089600639-cbb6debdee-0-9f91187a0e8eb5d77c3546b7bffe94cd82b3291dc258060ef598caca5862859f" alt="核心洞察图2" style="width: 100%;">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">03</span>策略定位</h3>
+                            <div class="modal-text">
+                                <p><strong>产品定位</strong>：以「内向力生活方式」为核心，打造线下+线上沉浸式体验</p>
+                                <p><strong>核心策略</strong>：「i-Path专属沉浸路线」匹配「低频深社交」需求</p>
+                            </div>
+                            <div class="modal-highlight-box">
+                                <p><strong>AIGC赋能文旅公共空间的机会点</strong>：结合PEST分析，提炼产品创新方向</p>
+                            </div>
+                            <div class="modal-image-single">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/49_9ea9c601.png?sign=2089600637-44f1979aed-0-cd811c654b2c4bc35f1201361dab91c2d3bf205abc73fe6fecc51fb41a6ab1ef" alt="PEST分析">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">04</span>设计落地</h3>
+                            <div class="modal-text">
+                                <p><strong>核心功能模块</strong>：</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <strong style="display: block; margin-bottom: 5px;">AIGC动态点位指引</strong>
+                                    <p style="margin: 0; font-size: 0.85rem;">智能推荐安静区域</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <strong style="display: block; margin-bottom: 5px;">个性化路线生成</strong>
+                                    <p style="margin: 0; font-size: 0.85rem;">专属沉浸路线规划</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <strong style="display: block; margin-bottom: 5px;">UGC视觉互动</strong>
+                                    <p style="margin: 0; font-size: 0.85rem;">用户创作与分享</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <strong style="display: block; margin-bottom: 5px;">线下物料落地</strong>
+                                    <p style="margin: 0; font-size: 0.85rem;">空间引导设计</p>
+                                </div>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>视觉标准化</strong>：统一字体/色彩/核心符号，强化品牌记忆</p>
+                                <p><strong>线上原型</strong>：小程序原型搭建，实现线下+线上联动</p>
+                            </div>
+                            <div class="modal-highlight-box">
+                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                                    <div>
+                                        <h5 style="margin: 0 0 8px 0; font-weight: 700;">📱 iπ线上原型体验</h5>
+                                        <p style="margin: 0; font-size: 0.85rem;">点击查看完整的小程序交互原型</p>
+                                    </div>
+                                    <a href="https://zhanghejing6542.github.io/i-/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: var(--text); color: white; padding: 12px 24px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">
+                                        <span>前往体验</span>
+                                        <span>→</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">05</span>体验闭环</h3>
+                            <div class="modal-text">
+                                <p><strong>AIGC视觉体验闭环：「采集 → 转化 → 再生」</strong></p>
+                            </div>
+                            <div class="modal-inner-box" style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                                <div style="padding: 15px 25px; text-align: center;">
+                                    <div style="font-weight: 700;">采集</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">用户行为数据</div>
+                                </div>
+                                <span style="font-size: 1.5rem;">→</span>
+                                <div style="padding: 15px 25px; text-align: center;">
+                                    <div style="font-weight: 700;">转化</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">AIGC智能处理</div>
+                                </div>
+                                <span style="font-size: 1.5rem;">→</span>
+                                <div style="padding: 15px 25px; text-align: center;">
+                                    <div style="font-weight: 700;">再生</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">个性化体验输出</div>
+                                </div>
+                            </div>
+                            <div class="modal-highlight-box">
+                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                                    <div>
+                                        <h5 style="margin: 0 0 8px 0; font-weight: 700;">🎬 项目展示视频</h5>
+                                        <p style="margin: 0; font-size: 0.85rem;">观看iπ项目完整体验流程演示</p>
+                                    </div>
+                                    <a href="https://www.bilibili.com/video/BV1U2ijBQE85/?share_source=copy_web&vd_source=fe966765bb54a37ba90141f0e8e6b084" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: var(--text); color: white; padding: 12px 24px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">
+                                        <span>▶ 观看视频</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">📖</span>品牌手册</h3>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/1_e2f3f72d.png?sign=2089600627-f989be76b9-0-de58d494d85779dca5d60098810d246510e74fd92c263211c42090945d66e6c4" alt="品牌手册1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/2_e402e10b.png?sign=2089600630-fb6805afc5-0-c523c4f54beed1d628e48f17c9695fd901a89568ea02725e4582e0fb718d237b" alt="品牌手册2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/3_0a94852c.png?sign=2089600632-1c6c321fe5-0-d4ff739c411682da371dc0960c104e1bc672f1c9c219196e48e1070cfe1ba499" alt="品牌手册3">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/4_1edfc6f0.png?sign=2089600635-8ae6d9da10-0-538d2982636824faf7b5fcc8d8937d73a7b1959d8981b62269c993c8e6e84158" alt="品牌手册4">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/5_b4df1cea.png?sign=2089600639-766d09d73e-0-a0a5c9557b0e43e0ee884f0b09494730c8a22d7111d5024a4b004d4b55bdf790" alt="品牌手册5">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/6_5af402fc.png?sign=2089600640-5da49d3e6a-0-512679e69630e56e80f7fa0f5df4fa42c3735eba3f8bb7100e09a9ad96954132" alt="品牌手册6">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/8_95824879.png?sign=2089600641-56e289aa43-0-e8f577f88579eb1ad44653d1452d3bdecace4f5dc27b1a0a30b5f5d24b56ee2f" alt="品牌手册8">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/10_6b688292.png?sign=2089600628-d41e5eee97-0-3f7fc868fa1f509583b0c8cea99039931a7901c53270b34bc24d58b6eb4df6e0" alt="品牌手册10">
+                            </div>
+                        </div>
+                    `
+                },
+                qihang: {
+                    title: '启航站 – 高校升学就业一站式服务平台',
+                    html: `
+                        
+                        <div class="modal-tags">
+                            <span class="modal-tag primary">🏆 2024中国大学生计算机设计大赛湖北省三等奖</span>
+                            <span class="modal-tag">从0到1跨端产品设计</span>
+                            <span class="modal-tag">高校场景精准化产品落地</span>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">01</span>项目概况</h3>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <div style="font-size: 0.85rem; opacity: 0.7;">我的角色</div>
+                                    <div style="font-weight: 700; margin-top: 5px;">视觉与交互逻辑设计负责人</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-size: 0.85rem; opacity: 0.7;">技术架构</div>
+                                    <div style="font-weight: 700; margin-top: 5px;">鸿蒙APP + React网页端</div>
+                                </div>
+                            </div>
+                            <div class="modal-highlight-box">
+                                <p style="font-weight: 700; font-size: 1rem;">💡 产品slogan</p>
+                                <p style="margin: 10px 0 0 0;">启航站，搭建高校生升学就业的梦想跳板</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">02</span>需求挖掘：从高校就业现状到产品机会</h3>
+                            <div class="modal-text">
+                                <p><strong>市场痛点</strong>：毕业人数激增、就业压力大、升学就业信息不对称、学长经验无有效传承渠道</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">📋</div>
+                                    <div style="font-size: 0.9rem; font-weight: 700;">信息需求</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">真实优质的升学/就业经验</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">💬</div>
+                                    <div style="font-size: 0.9rem; font-weight: 700;">互动需求</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">与学长学姐经验交流</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">🔒</div>
+                                    <div style="font-size: 0.9rem; font-weight: 700;">安全需求</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">信息真实可验证</div>
+                                </div>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>产品机会点</strong>：解决「信息不对称、内容不真实、互动无渠道」三大痛点，打造安全、可靠、高效的高校专属信息平台</p>
+                            </div>
+                            <div class="modal-image-single" style="background: white; padding: 20px;">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/Tu_Pian_1_cf349d5b.png?sign=2089600646-0453c1612a-0-0f5953e735c4c91ab9155bd289e3f278e17a3a199805f4aa214168499f82634d" alt="产品架构图">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">03</span>产品设计：从角色定义到规则搭建</h3>
+                            <div class="modal-text">
+                                <p><strong>双角色权限设计</strong>：普通用户 + 管理员，贴合高校场景</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <h5 style="margin: 0 0 12px 0; font-weight: 700;">📱 用户端（鸿蒙APP）</h5>
+                                    <ul style="margin: 0; padding-left: 18px; font-size: 0.85rem; line-height: 1.8;">
+                                        <li>广场浏览</li>
+                                        <li>经验发帖</li>
+                                        <li>就业帖二次验证</li>
+                                        <li>个人主页管理</li>
+                                        <li>二级评论互动</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <h5 style="margin: 0 0 12px 0; font-weight: 700;">🖥️ 管理端（React网页）</h5>
+                                    <ul style="margin: 0; padding-left: 18px; font-size: 0.85rem; line-height: 1.8;">
+                                        <li>帖子审核</li>
+                                        <li>权限管理</li>
+                                        <li>用户管理</li>
+                                        <li>反馈处理</li>
+                                        <li>数据可视化</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>三大核心产品规则</strong>：</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">🔐 身份验证</div>
+                                    <div style="font-size: 0.8rem;">与学校数据库对接，确保学长学姐身份真实</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">✅ 双层审核</div>
+                                    <div style="font-size: 0.8rem;">就业帖额外增加公司信息+工牌二次验证</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">🛡️ 隐私安全</div>
+                                    <div style="font-size: 0.8rem;">用户信息加密存储，未审核内容不展示</div>
+                                </div>
+                            </div>
+                            <div class="modal-image-single" style="background: white; padding: 20px;">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/Tu_Pian_2_557b4cf6.png?sign=2089600647-5df1b78eb0-0-1c014553166df5bb4b30a56f797aee6cda0308b6caa56bf474673706e37663a5" alt="功能架构图">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">04</span>技术落地：跨端技术协同</h3>
+                            <div class="modal-text">
+                                <p><strong>产品跨端技术架构</strong>：鸿蒙APP端 + React网页端 + SpringBoot后端 + MySQL数据库</p>
+                            </div>
+                            <div class="modal-inner-box">
+                                <h5 style="margin: 0 0 15px 0; font-weight: 700;">跨端落地核心问题</h5>
+                                <div style="display: grid; gap: 12px;">
+                                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                        <span style="background: var(--text); color: white; padding: 4px 10px; font-size: 0.75rem; white-space: nowrap;">跨端一致性</span>
+                                        <span style="font-size: 0.85rem;">制定统一产品交互逻辑，确保APP端与网页端操作体验无断层</span>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                        <span style="background: var(--text); color: white; padding: 4px 10px; font-size: 0.75rem; white-space: nowrap;">技术协同</span>
+                                        <span style="font-size: 0.85rem;">针对鸿蒙生态不成熟等技术难点，协同技术团队简化需求、优化方案</span>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                        <span style="background: var(--text); color: white; padding: 4px 10px; font-size: 0.75rem; white-space: nowrap;">功能落地</span>
+                                        <span style="font-size: 0.85rem;">主导JWT Token认证、邮箱验证、二级评论等核心功能的产品需求定义</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">05</span>功能展示：从用户端到管理端</h3>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">🔄 二次验证</div>
+                                    <div style="font-size: 0.8rem;">就业帖真实率100%</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">📋 双层审核</div>
+                                    <div style="font-size: 0.8rem;">内容质量双重保障</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-weight: 700; margin-bottom: 8px;">💬 二级评论</div>
+                                    <div style="font-size: 0.8rem;">增强用户互动深度</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-link-grid">
+                            <a href="https://zhanghejing6542.github.io/-/" target="_blank" class="modal-link-card-item">
+                                <div>
+                                    <div class="modal-link-card-item-title">📱 小程序端</div>
+                                    <div class="modal-link-card-item-desc">用户端体验Demo</div>
+                                </div>
+                                <span>→</span>
+                            </a>
+                            <a href="https://zhanghejing6542.github.io/-web-/" target="_blank" class="modal-link-card-item">
+                                <div>
+                                    <div class="modal-link-card-item-title">🖥️ 网页管理端</div>
+                                    <div class="modal-link-card-item-desc">管理端体验Demo</div>
+                                </div>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    `
+                },
+                pinhaofan: {
+                    title: '拼好饭 PIECE TOGETHER – AI营养师+3D食品打印视觉化食物设计系统',
+                    html: `
+                        
+                        <div class="modal-tags">
+                            <span class="modal-tag primary">🥗 AIGC未来食物视觉设计案例</span>
+                            <span class="modal-tag">营养数据视觉化</span>
+                            <span class="modal-tag">3D食品打印原型</span>
+                        </div>
+
+                        <!-- 模块1：项目核心定位 -->
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">01</span>项目核心定位</h3>
+                            <div class="modal-highlight-box" style="border-left: 4px solid var(--border);">
+                                <p style="margin: 0; font-size: 0.95rem; line-height: 1.8;">
+                                    <strong>核心定位</strong>：基于AIGC的个性化饮食营养视觉化解决方案，为都市职场青年打造「营养数据→视觉化食谱→3D打印食物」的全链路产品
+                                </p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <div style="font-size: 0.85rem; opacity: 0.7;">我的角色</div>
+                                    <div style="font-weight: 700; margin-top: 5px;">AIGC视觉产品负责人</div>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <div style="font-size: 0.85rem; opacity: 0.7;">核心成果</div>
+                                    <div style="font-weight: 700; margin-top: 5px;">4类用户视觉食谱 + 17种营养元素视觉体系</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">02</span>项目背景&用户洞察</h3>
+                            <div class="modal-text">
+                                <p><strong>行业趋势</strong>：速食市场规模提升，健康营养类即食产品年增25%，但市场产品同质化严重（72.28%用户反馈），传统视觉化呈现无法满足个性化营养需求</p>
+                            </div>
+                            <div class="modal-image-single">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/12_4db4e8d2.png?sign=2089600628-0e0361da2e-0-bd2265b0211a755a5177f60c60065e3284b67cd4e6fd53a35efa3db00bac1ae5" alt="调研图1">
+                            </div>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/13_3bdbe75b.png?sign=2089600628-ed8d44af00-0-3091922226af5e4b5e4829be01c2c052168b1e3ed8b2dafca6c3c56073587905" alt="调研图2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/14_2af157d4.png?sign=2089600628-343ac71c78-0-2ada4fd6adbb445941acf285db3ca63e58dc8477f110d717e6b284e78b1341d6" alt="调研图3">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/15_f15438b5.png?sign=2089600629-1b3faa87c8-0-2cd0167a45b0dedfeb21dad95051e9b1a7cc73d35964ca03f869089eef9beff7" alt="调研图4">
+                            </div>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/16_acea0ca5.png?sign=2089600629-88b34ee308-0-e2c0cfbebe5c985ec6ae3e775ca5e56bc4178031a46f6b9d24b8ab991acc03a9" alt="调研图5">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/17_81e00195.png?sign=2089600629-557ac382d0-0-a7d97854cff2cc5b0b29183d91e4ab11e91ffe05ad99b60d922a2bc5064aec59" alt="调研图6">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/18_92caa1e5.png?sign=2089600630-9f6ec73464-0-fef491628ef0473083b197993148aea287a3e31799bcb862e58ff47d95308ea0" alt="调研图7">
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>用户调研</strong>：101份18-35岁青年问卷 + 4位职场人深度访谈，核心样本为建筑设计、互联网开发、游戏设计等高强度职场人群</p>
+                            </div>
+                            <div class="modal-image-grid">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/19_b55a871e.png?sign=2089600630-5567ee79c2-0-98e22c0ab29f4d146b1fd4ad359df185b2973c05362832e134f11faf46bec7e6" alt="用户调研1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/20_5a8014ec.png?sign=2089600631-9145bff5b4-0-b6787e9865cf0125a7d4c8b541c35f52452ec00a309f0e0d9d02c45593d6f737" alt="用户调研2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/21_34f4e851.png?sign=2089600631-007c938ee4-0-f17fd556dd08c2e0cd8d9b50d86226692ae3f0e7f8e2df8481c58a9b724966a9" alt="用户调研3">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/Xuan_Ti_Fang_Xiang_4a140e50.png?sign=2089600655-2b06e0bd76-0-8cc130f753e345b353a42c7263ee3a9d61f02921ca94684f56561d59ab6c9ae8" alt="选题方向">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">03</span>产品核心策略</h3>
+                            <div class="modal-text">
+                                <p><strong>核心目标</strong>：用AIGC「拼」出健康的工作餐，实现「营养个性化+视觉直观化+食用高效化」</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">🎯</div>
+                                    <div style="font-weight: 700; font-size: 0.9rem;">营养精准</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">AIGC生成精准营养素数据</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">👁️</div>
+                                    <div style="font-weight: 700; font-size: 0.9rem;">视觉易懂</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">数据转化为直观视觉元素</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">⚡</div>
+                                    <div style="font-weight: 700; font-size: 0.9rem;">体验适配</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">贴合职场快节奏场景</div>
+                                </div>
+                            </div>
+                            <div class="modal-inner-box">
+                                <h5 style="margin: 0 0 15px 0; font-weight: 700;">AIGC技术落地路径</h5>
+                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                    <div style="text-align: center; padding: 10px; flex: 1;">
+                                        <div style="font-weight: 700; font-size: 0.85rem;">用户档案</div>
+                                        <div style="font-size: 0.75rem; opacity: 0.7;">偏好+健康数据</div>
+                                    </div>
+                                    <span style="font-size: 1.2rem;">→</span>
+                                    <div style="text-align: center; padding: 10px; flex: 1;">
+                                        <div style="font-weight: 700; font-size: 0.85rem;">AIGC生成</div>
+                                        <div style="font-size: 0.75rem; opacity: 0.7;">个性化食谱</div>
+                                    </div>
+                                    <span style="font-size: 1.2rem;">→</span>
+                                    <div style="text-align: center; padding: 10px; flex: 1;">
+                                        <div style="font-weight: 700; font-size: 0.85rem;">视觉转化</div>
+                                        <div style="font-size: 0.75rem; opacity: 0.7;">营养数据可视化</div>
+                                    </div>
+                                    <span style="font-size: 1.2rem;">→</span>
+                                    <div style="text-align: center; padding: 10px; flex: 1;">
+                                        <div style="font-weight: 700; font-size: 0.85rem;">3D打印</div>
+                                        <div style="font-size: 0.75rem; opacity: 0.7;">视觉原型落地</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">04</span>核心产品落地：AIGC视觉化设计</h3>
+                            <div class="modal-text">
+                                <p><strong>营养元素视觉化体系</strong>：梳理人体必需的17种核心营养素（7种宏量+7种矿物质+3种维生素），定义每类营养元素的视觉化设计规范</p>
+                            </div>
+                            <div class="modal-image-grid">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/36_0900e3d9.png?sign=2089600633-f9ba19f697-0-449c902814a5df6315ee61864ecc03009bf7705f2eeb4d564e46f6e38d800665" alt="营养元素1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/37_57a070c9.png?sign=2089600633-7670bd91c7-0-7979705cede92723eb47f64d6fc2d7ca97274c1feb9e769cdbead730db74739d" alt="营养元素2">
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>AIGC个性化食谱视觉化</strong>：以杭州后端开发工程师Leslie为例，展示AIGC生成的一日三餐食谱视觉模板</p>
+                            </div>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/39_30e9eeb3.png?sign=2089600634-4412415ba9-0-14f45c8a0de9585dcac6eb05a791d7f83b2c2a0ad603be98b4222b6ba3b166de" alt="食谱1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/40_2f5c0085.png?sign=2089600635-5b16215484-0-2b8cf187faf20679f0ecb59444a4f7cdf5b8f5d7699fedc7050587f39e06b2d1" alt="食谱2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/41_189be48f.png?sign=2089600635-5191e06fa4-0-f0dabad8831aac19c80d3d5ada7294375a54df94ec09db18c682c2525eadda55" alt="食谱3">
+                            </div>
+                            <div class="modal-text">
+                                <p><strong>3D食品打印机视觉原型</strong>：纯白极简的打印机视觉原型，贴合职场人「办公桌使用」的场景</p>
+                            </div>
+                            <div class="modal-image-single">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/46De_Fu_Ben_2a72604b.png?sign=2089600636-55be9f3d74-0-949857c13a145378f9f5c3ef83af863e6cb646a81ed1cb24746d05314bbbf619" alt="3D打印原型">
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">05</span>项目衍生成果</h3>
+                            <div class="modal-text">
+                                <p><strong>产品宣传视频视觉脚本</strong>：完整的视频视觉脚本，包含镜头、具体画面、文案</p>
+                            </div>
+                            <div class="modal-image-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/47_47356dc2.png?sign=2089600636-29975a7980-0-a9248680fbdb54b84fdb274e14c3d959225754355aa849d25521dee67aa51313" alt="视频脚本1">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/48_2ca214d0.png?sign=2089600637-dca88bb993-0-3e4f5f65344fcbaa84144db24fb2f61510422622193efeaf4d5a72820451350c" alt="视频脚本2">
+                                <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619745886993940515/portfolio/49De_Fu_Ben_feb0a8af.png?sign=2089600637-ac11a81734-0-e8267a882111c30731c0896319d21152038179c69c62c958054d8ac0578c9a21" alt="视频脚本3">
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(4, 1fr);">
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: 700;">4类</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">用户视觉食谱</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: 700;">17种</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">营养元素视觉体系</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: 700;">1套</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">3D打印视觉原型</div>
+                                </div>
+                                <div class="modal-inner-box" style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: 700;">11镜</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">宣传视频脚本</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3 class="modal-section-title"><span class="num">06</span>项目总结</h3>
+                            <div class="modal-inner-box">
+                                <p style="margin: 0;"><strong>核心思考</strong>：AIGC技术为核心，视觉设计为载体，用户需求为根本。视觉化不能脱离产品核心目标，AIGC技术不能脱离用户实际使用场景。</p>
+                            </div>
+                            <div class="modal-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="modal-inner-box">
+                                    <span style="display: inline-block; padding: 4px 10px; background: var(--highlight); font-size: 0.75rem; margin-bottom: 8px;">需求转化</span>
+                                    <p style="margin: 0; font-size: 0.85rem;">用户调研到AIGC视觉产品需求的转化能力</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <span style="display: inline-block; padding: 4px 10px; background: var(--highlight); font-size: 0.75rem; margin-bottom: 8px;">数据视觉化</span>
+                                    <p style="margin: 0; font-size: 0.85rem;">营养数据的视觉化建模能力</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <span style="display: inline-block; padding: 4px 10px; background: var(--highlight); font-size: 0.75rem; margin-bottom: 8px;">技术融合</span>
+                                    <p style="margin: 0; font-size: 0.85rem;">AIGC技术与产品视觉设计的融合落地</p>
+                                </div>
+                                <div class="modal-inner-box">
+                                    <span style="display: inline-block; padding: 4px 10px; background: var(--highlight); font-size: 0.75rem; margin-bottom: 8px;">原型设计</span>
+                                    <p style="margin: 0; font-size: 0.85rem;">产品原型设计与落地体验设计</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-link-grid">
+                            <a href="https://r.xiumius.cn/board/v5/5yh7I/669952864" target="_blank" class="modal-link-card-item">
+                                <div>
+                                    <div class="modal-link-card-item-title">📱 微信公众号推文</div>
+                                    <div class="modal-link-card-item-desc">H5页面展示</div>
+                                </div>
+                                <span>→</span>
+                            </a>
+                            <a href="https://www.bilibili.com/video/BV1NsBvBqExP/?share_source=copy_web&vd_source=fe966765bb54a37ba90141f0e8e6b084" target="_blank" class="modal-link-card-item">
+                                <div>
+                                    <div class="modal-link-card-item-title">🎬 项目视频</div>
+                                    <div class="modal-link-card-item-desc">B站观看</div>
+                                </div>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    `
+                }
+            };
+            return contents[project] || { title: '项目详情', html: '<p>内容加载中...</p>' };
+        }
+    </script>
+</body>
+</html>
